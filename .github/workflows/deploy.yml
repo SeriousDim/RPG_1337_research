@@ -1,0 +1,97 @@
+name: Deploy Streamlit to VDS
+
+on:
+  push:
+    branches: [ "master" ]
+
+env:
+  APP_NAME: streamlit-app
+  APP_ENTRY: view/streamlit.py
+  APP_PORT: "8501"
+  REMOTE_BASE: /opt/streamlit-app
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: ci
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Create archive
+        run: |
+          git ls-files -z | tar --null -T - -czf app.tar.gz
+
+      - name: Upload archive to VDS
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.VDS_HOST }}
+          username: ${{ secrets.VDS_USER }}
+          key: ${{ secrets.VDS_SSH_KEY }}
+          port: ${{ secrets.VDS_PORT || 22 }}
+          source: "app.tar.gz"
+          target: "/tmp"
+
+      - name: Deploy and restart service on VDS
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VDS_HOST }}
+          username: ${{ secrets.VDS_USER }}
+          key: ${{ secrets.VDS_SSH_KEY }}
+          port: ${{ secrets.VDS_PORT || 22 }}
+          script: |
+            set -e
+
+            APP_NAME="${{ env.APP_NAME }}"
+            APP_ENTRY="${{ env.APP_ENTRY }}"
+            APP_PORT="${{ env.APP_PORT }}"
+            REMOTE_BASE="${{ env.REMOTE_BASE }}"
+
+            # 1) подготовка каталогов
+            sudo mkdir -p "$REMOTE_BASE/releases"
+            sudo mkdir -p "$REMOTE_BASE/shared"
+            sudo mkdir -p "$REMOTE_BASE/current"
+            sudo chown -R $USER:$USER "$REMOTE_BASE"
+
+            RELEASE_DIR="$REMOTE_BASE/releases/$(date +%Y%m%d%H%M%S)"
+            mkdir -p "$RELEASE_DIR"
+
+            # 2) распаковка нового релиза
+            tar -xzf /tmp/app.tar.gz -C "$RELEASE_DIR"
+
+            # 3) виртуальное окружение на каждый релиз (просто и надежно)
+            python3 -m venv "$RELEASE_DIR/.venv"
+            "$RELEASE_DIR/.venv/bin/pip" install --upgrade pip
+            "$RELEASE_DIR/.venv/bin/pip" install -r "$RELEASE_DIR/requirements.txt"
+
+            # 4) переключаем current на новый релиз
+            rm -f "$REMOTE_BASE/current"
+            ln -s "$RELEASE_DIR" "$REMOTE_BASE/current"
+
+            # 5) systemd unit (создаем/обновляем)
+            SERVICE_FILE="/etc/systemd/system/${APP_NAME}.service"
+
+            sudo tee "$SERVICE_FILE" > /dev/null <<EOF
+            [Unit]
+            Description=Streamlit app (${APP_NAME})
+            After=network.target
+
+            [Service]
+            Type=simple
+            WorkingDirectory=${REMOTE_BASE}/current
+            ExecStart=${REMOTE_BASE}/current/.venv/bin/streamlit run ${APP_ENTRY} --server.port ${APP_PORT} --server.address 0.0.0.0
+            Restart=always
+            RestartSec=3
+            Environment=PYTHONUNBUFFERED=1
+
+            [Install]
+            WantedBy=multi-user.target
+            EOF
+
+            sudo systemctl daemon-reload
+            sudo systemctl enable "${APP_NAME}.service"
+            sudo systemctl restart "${APP_NAME}.service"
+
+            # 6) (опционально) показываем статус
+            sudo systemctl --no-pager --full status "${APP_NAME}.service" || true

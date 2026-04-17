@@ -1,0 +1,7 @@
+./env
+/*.env
+/view/__pycache__
+/.deepeval
+/.vscode
+*.pyc
+venv/

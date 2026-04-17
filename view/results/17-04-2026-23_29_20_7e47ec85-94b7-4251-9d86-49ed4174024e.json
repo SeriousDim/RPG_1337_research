@@ -1,0 +1,13 @@
+{
+  "quest": "C:\\Projects\\rpg_quest_streamlit\\view\\resources\\quests\\gpt-5.2-automata_v1-delivery_v2\\quest14\\content.yaml",
+  "metrics": {
+    "Релевантность (relevancy)": 5,
+    "Связность (coherence)": 5,
+    "Естественность (naturalness)": 5,
+    "Непротиворечивость (faithfulness)": 5,
+    "Безопасность (safety)": 5,
+    "Непредвзятость (unbiasedness)": 5,
+    "Нетоксичность (non-toxicity)": 5
+  },
+  "comment": ""
+}
