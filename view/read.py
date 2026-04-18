@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import os
 from pathlib import Path
 
 
@@ -33,7 +34,7 @@ def zip_results_dir() -> bytes:
     import io
     import zipfile
 
-    result_dir = Path(__file__).resolve().parent / "results"
+    result_dir = Path(os.getenv("RESULTS_DIR", Path(__file__).resolve().parent / "results"))
     buffer = io.BytesIO()
 
     with zipfile.ZipFile(buffer, mode="w", compression=zipfile.ZIP_DEFLATED) as archive:
