@@ -48,9 +48,6 @@ jobs:
             APP_PORT="${{ env.APP_PORT }}"
             REMOTE_BASE="${{ env.REMOTE_BASE }}"
 
-            export RESULTS_DIR="${RESULTS_DIR:-/opt/streamlit-app/results}"
-            mkdir -p "$RESULTS_DIR"
-
             # 1) подготовка каталогов
             sudo mkdir -p "$REMOTE_BASE/releases"
             sudo mkdir -p "$REMOTE_BASE/shared"
@@ -87,6 +84,7 @@ jobs:
             Restart=always
             RestartSec=3
             Environment=PYTHONUNBUFFERED=1
+            Environment=RESULTS_DIR=/opt/streamlit-app/results
 
             [Install]
             WantedBy=multi-user.target
