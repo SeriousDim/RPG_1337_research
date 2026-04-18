@@ -9,7 +9,6 @@ env:
   APP_ENTRY: view/streamlit.py
   APP_PORT: "8501"
   REMOTE_BASE: /opt/streamlit-app
-  RESULTS_DIR: /opt/streamlit-app/results
 
 jobs:
   deploy:
@@ -48,6 +47,8 @@ jobs:
             APP_ENTRY="${{ env.APP_ENTRY }}"
             APP_PORT="${{ env.APP_PORT }}"
             REMOTE_BASE="${{ env.REMOTE_BASE }}"
+
+            export RESULTS_DIR="${RESULTS_DIR:-/opt/streamlit-app/results}"
 
             # 1) подготовка каталогов
             sudo mkdir -p "$REMOTE_BASE/releases"
