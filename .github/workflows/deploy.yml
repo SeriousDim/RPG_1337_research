@@ -66,8 +66,8 @@ jobs:
             "$RELEASE_DIR/.venv/bin/pip" install -r "$RELEASE_DIR/requirements.txt"
 
             # 4) переключаем current на новый релиз
-            rm -f "$REMOTE_BASE/current"
-            ln -s "$RELEASE_DIR" "$REMOTE_BASE/current"
+            rm -rf "$REMOTE_BASE/current"
+            ln -sfn "$RELEASE_DIR" "$REMOTE_BASE/current"
 
             # 5) systemd unit (создаем/обновляем)
             SERVICE_FILE="/etc/systemd/system/${APP_NAME}.service"
