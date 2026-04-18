@@ -61,7 +61,7 @@ jobs:
             tar -xzf /tmp/app.tar.gz -C "$RELEASE_DIR"
 
             # 3) виртуальное окружение на каждый релиз (просто и надежно)
-            python3 -m venv "$RELEASE_DIR/.venv"
+            python3.13 -m venv "$RELEASE_DIR/.venv"
             "$RELEASE_DIR/.venv/bin/pip" install --upgrade pip
             "$RELEASE_DIR/.venv/bin/pip" install -r "$RELEASE_DIR/requirements.txt"
 
