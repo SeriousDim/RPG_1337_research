@@ -80,7 +80,7 @@ jobs:
             [Service]
             Type=simple
             WorkingDirectory=${REMOTE_BASE}/current
-            ExecStart=${REMOTE_BASE}/current/.venv/bin/streamlit run ${APP_ENTRY} --server.port ${APP_PORT} --server.address 0.0.0.0
+            ExecStart=${REMOTE_BASE}/current/.venv/bin/python3.13 -m streamlit run ${APP_ENTRY} --server.port ${APP_PORT} --server.address 0.0.0.0
             Restart=always
             RestartSec=3
             Environment=PYTHONUNBUFFERED=1
