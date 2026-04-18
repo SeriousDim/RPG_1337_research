@@ -49,6 +49,7 @@ jobs:
             REMOTE_BASE="${{ env.REMOTE_BASE }}"
 
             export RESULTS_DIR="${RESULTS_DIR:-/opt/streamlit-app/results}"
+            mkdir -p "$RESULTS_DIR"
 
             # 1) подготовка каталогов
             sudo mkdir -p "$REMOTE_BASE/releases"

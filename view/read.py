@@ -35,6 +35,7 @@ def zip_results_dir() -> bytes:
     import zipfile
 
     result_dir = Path(os.getenv("RESULTS_DIR", Path(__file__).resolve().parent / "results"))
+    print(f"Results dir: {result_dir}")
     buffer = io.BytesIO()
 
     with zipfile.ZipFile(buffer, mode="w", compression=zipfile.ZIP_DEFLATED) as archive:

@@ -7,6 +7,7 @@ import os
 
 def save_current_answers(answers: dict) -> None:
     result_dir = Path(os.getenv("RESULTS_DIR", Path(__file__).resolve().parent / "results"))
+    print(f"Results dir: {result_dir}")
     result_dir.mkdir(parents=True, exist_ok=True)
 
     timestamp = datetime.now().strftime("%d-%m-%Y-%H_%M_%S")
