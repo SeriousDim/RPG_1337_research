@@ -2,10 +2,11 @@ from datetime import datetime
 from pathlib import Path
 from uuid import uuid4
 import json
+import os
 
 
 def save_current_answers(answers: dict) -> None:
-    result_dir = Path(__file__).resolve().parent / "results"
+    result_dir = Path(os.getenv("RESULTS_DIR", Path(__file__).resolve().parent / "results"))
     result_dir.mkdir(parents=True, exist_ok=True)
 
     timestamp = datetime.now().strftime("%d-%m-%Y-%H_%M_%S")

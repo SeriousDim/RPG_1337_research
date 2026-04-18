@@ -9,6 +9,7 @@ env:
   APP_ENTRY: view/streamlit.py
   APP_PORT: "8501"
   REMOTE_BASE: /opt/streamlit-app
+  RESULTS_DIR: /opt/streamlit-app/results
 
 jobs:
   deploy:
