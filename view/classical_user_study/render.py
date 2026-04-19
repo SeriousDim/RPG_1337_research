@@ -175,23 +175,41 @@ def render_classical_study() -> None:
 
     with middle_col:
         st.header("Диалоги сгенерированного квеста")
-
+        
+        st.markdown(
+            """
+            <div class="criterion-title">Получение задания на доставку</div>
+            """,
+            unsafe_allow_html=True
+        )
         st.text_area(
-            label="Получение задания на доставку",
+            label="",
             value=st.session_state.get("quest_parts_resource_to_deliver_text", ""),
             height=650,
             key="quest_parts_resource_to_deliver_text",
         )
 
+        st.markdown(
+            """
+            <div class="criterion-title">Встреча с противником</div>
+            """,
+            unsafe_allow_html=True
+        )
         st.text_area(
-            label="Встреча с противником",
+            label="",
             value=st.session_state.get("quest_parts_enemy_to_face_text", ""),
             height=650,
             key="quest_parts_enemy_to_face_text",
         )
 
+        st.markdown(
+            """
+            <div class="criterion-title">Доставка персонажу (завершение квеста)</div>
+            """,
+            unsafe_allow_html=True
+        )
         st.text_area(
-            label="Доставка персонажу (завершение квеста)",
+            label="",
             value=st.session_state.get("quest_parts_destination_text", ""),
             height=650,
             key="quest_parts_destination_text",
