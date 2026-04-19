@@ -151,6 +151,18 @@ def render_classical_study() -> None:
     left_col, middle_col, right_col = st.columns([1.05, 1.05, 1.0], gap="small")
 
     with left_col:
+        st.text_area(
+            label="Цель квеста",
+            value=st.session_state.get("quest_objective_text", ""),
+            height=90,
+            key="quest_objective_text",
+        )
+        st.text_area(
+            label="Награда за квест",
+            value=st.session_state.get("quest_reward_text", ""),
+            height=90,
+            key="quest_reward_text",
+        )
         st.header("Промпт и контекст")
         st.text_area(
             label="Промпт и контекст",
@@ -162,60 +174,27 @@ def render_classical_study() -> None:
         )
 
     with middle_col:
-        st.header("Сгенерированный квест")
-        st.text_area(
-            label="Цель",
-            value=st.session_state.get("quest_objective_text", ""),
-            height=90,
-            key="quest_objective_text",
-        )
-        st.text_area(
-            label="Награда",
-            value=st.session_state.get("quest_reward_text", ""),
-            height=90,
-            key="quest_reward_text",
-        )
+        st.header("Диалоги сгенерированного квеста")
 
-        st.markdown("**Получение задания на доставку**")
         st.text_area(
-            label="Содержание этой части квеста",
+            label="Получение задания на доставку",
             value=st.session_state.get("quest_parts_resource_to_deliver_text", ""),
             height=650,
             key="quest_parts_resource_to_deliver_text",
         )
-        st.text_area(
-            label="Объяснение нейросети",
-            value=st.session_state.get("quest_explanation_resource_to_deliver_text", ""),
-            height=650,
-            key="quest_explanation_resource_to_deliver_text",
-        )
 
-        st.markdown("**Встреча с противником**")
         st.text_area(
-            label="Содержание этой части квеста",
+            label="Встреча с противником",
             value=st.session_state.get("quest_parts_enemy_to_face_text", ""),
             height=650,
             key="quest_parts_enemy_to_face_text",
         )
-        st.text_area(
-            label="Объяснение нейросети",
-            value=st.session_state.get("quest_explanation_enemy_to_face_text", ""),
-            height=650,
-            key="quest_explanation_enemy_to_face_text",
-        )
 
-        st.markdown("**Доставка персонажу (завершение квеста)**")
         st.text_area(
-            label="Содержание этой части квеста",
+            label="Доставка персонажу (завершение квеста)",
             value=st.session_state.get("quest_parts_destination_text", ""),
             height=650,
             key="quest_parts_destination_text",
-        )
-        st.text_area(
-            label="Объяснение нейросети",
-            value=st.session_state.get("quest_explanation_destination_text", ""),
-            height=650,
-            key="quest_explanation_destination_text",
         )
 
 
