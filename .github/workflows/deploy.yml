@@ -54,7 +54,8 @@ jobs:
             sudo mkdir -p "$REMOTE_BASE/current"
             sudo chown -R $USER:$USER "$REMOTE_BASE"
 
-            RELEASE_DIR="$REMOTE_BASE/releases/$(date +%Y%m%d%H%M%S)"
+            RELEASE_DIR="$REMOTE_BASE/releases/current"
+            rm -rf "$RELEASE_DIR"
             mkdir -p "$RELEASE_DIR"
 
             # 2) распаковка нового релиза
