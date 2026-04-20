@@ -28,6 +28,7 @@ def to_yaml_text(value: object) -> str:
 
 def get_current_answers(quest_path: Path) -> dict[str, object]:
     return {
+        "session_id": st.session_state.get("session_id", ""),
         "quest": str(quest_path),
         "metrics": {
             title: st.session_state[f"criterion_{idx}"]
@@ -35,6 +36,7 @@ def get_current_answers(quest_path: Path) -> dict[str, object]:
         },
         "comment": st.session_state.get("free_comment", ""),
     }
+
 
 
 def reset_ratings_and_comment() -> None:
@@ -56,6 +58,7 @@ def render_classical_study() -> None:
     leaf_subfolders = get_leaf_subfolders(quests_root)
 
     st.session_state.setdefault("current_selection_position", 0)
+    
     for idx, _criterion in enumerate(CRITERIA, start=1):
         st.session_state.setdefault(f"criterion_{idx}", 5)
     st.session_state.setdefault("free_comment", "")
